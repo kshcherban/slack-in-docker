@@ -4,9 +4,10 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 
 RUN apt-get update && apt-get -y --no-install-recommends install \
-    ca-certificates \
-    locales \
-    wget && \
+        ca-certificates \
+        locales \
+        wget \
+        && \
     apt-get clean
 
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
@@ -27,12 +28,10 @@ RUN apt-get update && \
     apt-get -yf install && \
     apt-get clean && rm -rvf /var/lib/apt/lists/* slack-desktop-${SLACK_VERSION}-amd64.deb
 
-ARG user=insider
-ARG group=insider
+# User in container is insider
 ARG uid=1000
 ARG gid=1000
-RUN groupadd -g ${gid} ${group} && useradd -u ${uid} -g ${gid} -m ${user}
-
+RUN groupadd -g ${gid} insider && useradd -u ${uid} -g ${gid} -m insider
 USER insider
 
 ENTRYPOINT ["/usr/lib/slack/slack"]
