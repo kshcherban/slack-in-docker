@@ -12,7 +12,7 @@ docker run -it --rm \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -v $XAUTHORITY:/home/insider/.Xauthority \
     -e NO_AT_BRIDGE=1 \
-    -e DISPLAY=:0 \
+    -e DISPLAY=$DISPLAY \
     -e XAUTHORITY=/home/insider/.Xauthority \
     -e XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR \
     -e DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" \
