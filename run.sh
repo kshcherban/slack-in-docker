@@ -4,7 +4,8 @@
 #xhost +
 
 # Build docker image
-docker build --build-arg uid=$(id -u) --build-arg gid=$(id -g)  -t slack .
+VERSION=${SLACK_VERSION:-3.3.3}
+docker build --build-arg SLACK_VERSION=$VERSION --build-arg uid=$(id -u) --build-arg gid=$(id -g)  -t slack .
 
 docker run -it --rm \
     -v /etc/localtime:/etc/localtime:ro \

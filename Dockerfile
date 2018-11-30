@@ -4,11 +4,8 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 
 RUN apt-get update && apt-get -y --no-install-recommends install \
-    apt-transport-https \
     ca-certificates \
-    gnupg \
     locales \
-    gdebi \
     wget && \
     apt-get clean
 
@@ -17,6 +14,7 @@ RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
     && /usr/sbin/update-locale LANG=en_US.UTF-8
 
 # install slack and deps
+ARG SLACK_VERSION
 RUN apt-get update && \
     apt-get -y --no-install-recommends install \
         libasound2 \
@@ -24,9 +22,10 @@ RUN apt-get update && \
         libx11-xcb1 \
         libxkbfile1 \
         && \
-    wget --quiet https://downloads.slack-edge.com/linux_releases/slack-desktop-3.3.3-amd64.deb && \
-    gdebi --non-interactive -o="--no-install-recommends" slack-desktop-3.3.3-amd64.deb && \
-    apt-get clean && rm -rvf /var/lib/apt/lists/* slack-desktop-3.3.3-amd64.deb
+    wget --quiet https://downloads.slack-edge.com/linux_releases/slack-desktop-${SLACK_VERSION}-amd64.deb && \
+    dpkg -i slack-desktop-${SLACK_VERSION}-amd64.deb; \
+    apt-get -yf install && \
+    apt-get clean && rm -rvf /var/lib/apt/lists/* slack-desktop-${SLACK_VERSION}-amd64.deb
 
 ARG user=insider
 ARG group=insider
